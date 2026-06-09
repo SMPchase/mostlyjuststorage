@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin | Mostly Just Storage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <a class="back-link" href="index.html">← Back to site</a>
+    <section class="admin-card" id="login-card">
+      <p class="eyebrow">Private draft tool</p>
+      <h1>Mostly Just Storage admin</h1>
+      <p>This is a launch-stage editor. It is useful for drafting events, but it is not a secure production backend by itself.</p>
+      <label>Password<input id="admin-password" type="password" placeholder="Enter password" /></label>
+      <button class="button primary" id="login-button">Unlock</button>
+      <p class="fine-print">Temporary password in <code>admin.js</code>: <strong>storage</strong>. Change it before sharing the site.</p>
+    </section>
+
+    <section class="admin-card hidden" id="editor-card">
+      <p class="eyebrow">Add events</p>
+      <h1>Event editor</h1>
+      <form id="event-form" class="admin-form">
+        <label>Event title<input required id="event-title" placeholder="Echo House Movie Night" /></label>
+        <label>Date<input required id="event-date" type="date" /></label>
+        <label>Time<input required id="event-time" placeholder="7 PM" /></label>
+        <label>Type<input id="event-type" placeholder="Movie night / concert / listening room" /></label>
+        <label>Description<textarea required id="event-description" rows="4" placeholder="Short public description"></textarea></label>
+        <label>Ticket / RSVP link<input id="event-link" placeholder="https://... or leave blank" /></label>
+        <button class="button primary" type="submit">Add event locally</button>
+      </form>
+      <div class="admin-actions">
+        <button class="button ghost" id="download-json">Download events.json</button>
+        <button class="button ghost danger" id="clear-events">Clear local draft events</button>
+      </div>
+      <h2>Draft events</h2>
+      <div id="admin-events" class="event-list"></div>
+      <p class="fine-print">For a real public backend, connect this admin to Supabase, Firebase, Sanity, or a small server route. A static website cannot truly protect a password because the password lives in the files.</p>
+    </section>
+  </main>
+  <script src="events.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

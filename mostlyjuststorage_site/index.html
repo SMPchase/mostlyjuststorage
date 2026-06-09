@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mostly Just Storage Studio | Studio + Venue</title>
+  <meta name="description" content="Mostly Just Storage is a working studio, small venue, and creative room for recording, shows, movie nights, and Echo House events." />
+  <meta property="og:title" content="Mostly Just Storage Studio" />
+  <meta property="og:description" content="A studio, small venue, and creative room. Mostly storage. Sometimes records, shows, movie nights, and strange little memories." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Mostly Just Storage home">
+      <span class="brand-mark">MJS</span>
+      <span class="brand-copy"><strong>Mostly Just Storage</strong><small>Studio + Venue</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#book">Book Studio</a>
+      <a href="#events">Events</a>
+      <a href="#echo-house">Echo House</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="nav-cta" href="#book">Book Now</a>
+  </header>
+
+  <main id="top">
+    <section class="hero grid-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Recording room · small shows · strange little nights</p>
+        <h1>A working studio that is, technically, mostly just storage.</h1>
+        <p class="lead">There are instruments in the corner, speakers against the wall, cables in the bins, and people coming through to make something real. Book a session, pull up to a show, or let Echo House build the night.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#book">Book studio time</a>
+          <a class="button ghost" href="#events">See what’s coming up</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Current studio offer">
+        <div class="hero-card-top">
+          <span>Now booking</span>
+          <strong>2026</strong>
+        </div>
+        <h2>Studio time from <span>$35/hr</span></h2>
+        <p>Recording, writing, editing, rehearsal, content capture, and small room use. Engineer-assisted sessions and packages available.</p>
+        <a href="#book" class="text-link">Start a booking request →</a>
+      </aside>
+    </section>
+
+    <section class="marquee" aria-label="Brand note">
+      <span>Mostly Just Storage Studio</span>
+      <span>Echo House Events</span>
+      <span>Glasswall Records</span>
+      <span>Studio · Venue · Room for ideas</span>
+    </section>
+
+    <section class="section grid-shell two-col" id="about">
+      <div>
+        <p class="eyebrow">The room</p>
+        <h2>Not a fake-perfect studio. A room where people actually finish things.</h2>
+      </div>
+      <div class="prose">
+        <p>Mostly Just Storage is the physical place: the room, the gear, the chairs, the cables, the show setup, the late nights, and the photos people take when something finally works.</p>
+        <p>Echo House is the event and production name: movie nights, listening rooms, house shows, pop-up concerts, artist nights, and custom show builds.</p>
+      </div>
+    </section>
+
+    <section class="section grid-shell" id="book">
+      <div class="section-heading">
+        <p class="eyebrow">Book studio time</p>
+        <h2>Simple rates to get people back in the room.</h2>
+        <p>Start with a request. We’ll confirm the time, the type of session, and what you need before you pull up.</p>
+      </div>
+
+      <div class="rate-grid">
+        <article class="rate-card featured">
+          <span class="rate-label">Quick hour</span>
+          <h3>$35/hr</h3>
+          <p>Room time for writing, recording prep, vocal takes, rehearsal, editing, or content capture.</p>
+        </article>
+        <article class="rate-card">
+          <span class="rate-label">Standard session</span>
+          <h3>$75+</h3>
+          <p>Best for people who need help running the session, setting up, getting takes, and leaving with a cleaner result.</p>
+        </article>
+        <article class="rate-card">
+          <span class="rate-label">Packages</span>
+          <h3>Ask</h3>
+          <p>Multi-hour blocks, recurring studio days, artist bundles, small show filming, and event/studio combos.</p>
+        </article>
+      </div>
+
+      <form class="booking-form" name="studio-booking" method="POST" data-netlify="true" action="/thanks.html">
+        <input type="hidden" name="form-name" value="studio-booking" />
+        <div class="form-intro">
+          <h3>Request a session</h3>
+          <p>This form is built to collect leads immediately when hosted on Netlify. Replace the email/contact details with yours before launch.</p>
+        </div>
+        <label>Name<input required name="name" placeholder="Your name" /></label>
+        <label>Email or phone<input required name="contact" placeholder="Email or phone number" /></label>
+        <label>What do you need?
+          <select name="session_type">
+            <option>Studio time — $35/hr</option>
+            <option>Engineer-assisted session — $75+</option>
+            <option>Event / show / movie night</option>
+            <option>Echo House show production</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>Preferred date/time<input name="preferred_time" placeholder="Example: Friday after 6 PM" /></label>
+        <label>Tell us the plan<textarea name="message" rows="5" placeholder="Song, show, rehearsal, movie night, photoshoot, recording session, etc."></textarea></label>
+        <button class="button primary" type="submit">Send request</button>
+      </form>
+    </section>
+
+    <section class="section grid-shell" id="events">
+      <div class="section-heading split">
+        <div>
+          <p class="eyebrow">Events</p>
+          <h2>Coming up at the room.</h2>
+        </div>
+        <a class="button ghost" href="#contact">Ask about an event</a>
+      </div>
+      <div id="events-list" class="event-list" aria-live="polite"></div>
+    </section>
+
+    <section class="section grid-shell two-col echo-panel" id="echo-house">
+      <div>
+        <p class="eyebrow">Echo House</p>
+        <h2>The brand for nights we throw, build, and make feel bigger than the room.</h2>
+      </div>
+      <div class="prose">
+        <p>Echo House doesn’t need to disappear because the domain lapsed. It becomes the programming name: <strong>Echo House at Mostly Just Storage</strong>.</p>
+        <p>Use it when the event needs a stamp: concerts, movie nights, listening sessions, small festivals, artist showcases, release parties, and custom shows for other people.</p>
+        <a class="button primary" href="#contact">Have Echo House build your event</a>
+      </div>
+    </section>
+
+    <section class="section grid-shell proof-grid" aria-label="What you can do here">
+      <article>
+        <span>01</span>
+        <h3>Record</h3>
+        <p>Vocals, demos, writing sessions, rough mixes, references, and content around the session.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3>Host</h3>
+        <p>Small concerts, movie nights, listening rooms, private creative nights, and local artist showcases.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3>Build</h3>
+        <p>Echo House can help shape the lineup, room feel, flyer language, and run-of-show.</p>
+      </article>
+    </section>
+
+    <section class="section grid-shell contact-section" id="contact">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2>Book the room. Build the night. Use what’s already here.</h2>
+        <p class="lead small">Replace these placeholders with your real phone, email, Instagram, and address/area before publishing.</p>
+      </div>
+      <div class="contact-card">
+        <a href="mailto:booking@mostlyjuststorage.studio">booking@mostlyjuststorage.studio</a>
+        <a href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+        <p>Havre de Grace / Harford County, Maryland area</p>
+        <p class="fine-print">Exact address can be sent after booking confirmation.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Mostly Just Storage Studio</p>
+    <p>Echo House events · Glasswall Records adjacent</p>
+    <a href="admin.html">Admin</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
