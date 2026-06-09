@@ -3,181 +3,1681 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mostly Just Storage Studio | Studio + Venue</title>
-  <meta name="description" content="Mostly Just Storage is a working studio, small venue, and creative room for recording, shows, movie nights, and Echo House events." />
-  <meta property="og:title" content="Mostly Just Storage Studio" />
-  <meta property="og:description" content="A studio, small venue, and creative room. Mostly storage. Sometimes records, shows, movie nights, and strange little memories." />
-  <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#fff1f7" />
+  <meta name="description" content="Mostly Just Storage is a studio, tiny venue, and creative room for recording, rehearsals, shows, movie nights, and Echo House events." />
+  <title>Mostly Just Storage · Studio + Tiny Venue</title>
+  <style>
+    :root {
+      --cream: #fff9ee;
+      --paper: #fffdf8;
+      --ink: #19151d;
+      --muted: #6d6271;
+      --pink: #ff6fb7;
+      --pink-2: #ffc8e2;
+      --coral: #ff8a75;
+      --sun: #ffd45d;
+      --mint: #88ead5;
+      --blue: #96c7ff;
+      --lav: #d8c3ff;
+      --lime: #d7ff72;
+      --shadow: 0 24px 80px rgba(64, 37, 58, .16);
+      --shadow-soft: 0 16px 45px rgba(64, 37, 58, .10);
+      --border: rgba(25, 21, 29, .10);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1160px;
+      --ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 111, 183, .30), transparent 24rem),
+        radial-gradient(circle at 92% 16%, rgba(136, 234, 213, .36), transparent 23rem),
+        radial-gradient(circle at 58% 5%, rgba(255, 212, 93, .24), transparent 21rem),
+        linear-gradient(180deg, #fff1f7 0%, var(--cream) 42%, #fff 100%);
+      font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", Avenir, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .38;
+      background-image:
+        linear-gradient(rgba(25, 21, 29, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(25, 21, 29, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 90%);
+      z-index: -4;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    img, svg { max-width: 100%; display: block; }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      transform: translateY(-140%);
+      background: var(--ink);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      z-index: 999;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .bg-orbit {
+      position: fixed;
+      inset: -12vh -10vw auto;
+      height: 120vh;
+      pointer-events: none;
+      z-index: -3;
+      filter: blur(.2px);
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      width: clamp(110px, 17vw, 240px);
+      aspect-ratio: 1;
+      border-radius: 44% 56% 55% 45% / 48% 38% 62% 52%;
+      opacity: .72;
+      mix-blend-mode: multiply;
+      animation: drift var(--dur, 18s) var(--delay, 0s) infinite alternate var(--ease);
+      transform: translate3d(0,0,0);
+    }
+    .blob.one { left: 6%; top: 11%; background: var(--pink-2); --dur: 18s; }
+    .blob.two { right: 8%; top: 14%; background: var(--mint); --dur: 20s; --delay: -4s; }
+    .blob.three { left: 45%; top: 4%; background: var(--sun); --dur: 16s; --delay: -7s; }
+    .blob.four { left: 68%; top: 55%; background: var(--lav); --dur: 22s; --delay: -2s; }
+    .blob.five { left: 9%; top: 70%; background: var(--blue); --dur: 24s; --delay: -10s; }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+      100% { transform: translate3d(var(--x, 42px), var(--y, -56px), 0) rotate(24deg) scale(1.12); }
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      opacity: .10;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+    }
+
+    .site-shell {
+      width: min(var(--max), calc(100% - 32px));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 12px;
+      z-index: 50;
+      width: min(var(--max), calc(100% - 24px));
+      margin: 12px auto 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 14px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .72);
+      background: rgba(255, 253, 248, .72);
+      backdrop-filter: blur(22px) saturate(1.25);
+      border-radius: 999px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: max-content;
+    }
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px 19px 14px 18px;
+      background:
+        radial-gradient(circle at 28% 22%, white 0 14%, transparent 15%),
+        linear-gradient(135deg, var(--pink), var(--sun));
+      color: white;
+      font-weight: 950;
+      letter-spacing: -.08em;
+      box-shadow: 0 10px 22px rgba(255, 111, 183, .28);
+      transform: rotate(-5deg);
+    }
+    .brand-copy strong { display: block; line-height: 1; font-size: .98rem; letter-spacing: -.04em; }
+    .brand-copy small { color: var(--muted); font-weight: 750; font-size: .72rem; }
+
+    .desktop-nav {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      padding: 5px;
+      background: rgba(255, 255, 255, .44);
+      border: 1px solid rgba(25, 21, 29, .06);
+      border-radius: 999px;
+    }
+    .desktop-nav a {
+      padding: 10px 13px;
+      color: rgba(25, 21, 29, .76);
+      border-radius: 999px;
+      font-size: .88rem;
+      font-weight: 850;
+      transition: transform .24s var(--ease), background .24s var(--ease), color .24s var(--ease);
+    }
+    .desktop-nav a:hover,
+    .desktop-nav a:focus-visible {
+      transform: translateY(-2px);
+      background: white;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .pill-button,
+    .button {
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 999px;
+      font-weight: 950;
+      letter-spacing: -.02em;
+      transition: transform .24s var(--ease), box-shadow .24s var(--ease), filter .24s var(--ease), background .24s var(--ease);
+      text-wrap: balance;
+    }
+    .pill-button {
+      padding: 12px 15px;
+      background: var(--ink);
+      color: white;
+      box-shadow: 0 15px 28px rgba(25,21,29,.16);
+    }
+    .pill-button.secondary {
+      background: rgba(255,255,255,.62);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+    .button {
+      padding: 15px 20px;
+      min-height: 52px;
+      font-size: .96rem;
+    }
+    .button.primary {
+      color: white;
+      background: linear-gradient(135deg, var(--ink), #3c233a 55%, #7c2f62);
+      box-shadow: 0 20px 45px rgba(92, 38, 76, .24);
+    }
+    .button.sunny {
+      color: #2b1c0d;
+      background: linear-gradient(135deg, var(--sun), var(--lime));
+      box-shadow: 0 18px 36px rgba(255, 212, 93, .35);
+    }
+    .button.ghost {
+      background: rgba(255,255,255,.68);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .button:hover, .pill-button:hover,
+    .button:focus-visible, .pill-button:focus-visible {
+      transform: translateY(-3px) scale(1.02);
+      filter: saturate(1.08);
+      outline: none;
+    }
+    .button:active, .pill-button:active { transform: translateY(0) scale(.99); }
+
+    main { position: relative; }
+    .hero {
+      min-height: calc(100vh - 92px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(320px, .72fr);
+      gap: 24px;
+      align-items: center;
+      padding: 80px 0 62px;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .section-card,
+    .rate-card,
+    .event-card,
+    .echo-card,
+    .form-card,
+    .admin-card,
+    .mini-note {
+      border: 1px solid rgba(255,255,255,.72);
+      background: rgba(255, 253, 248, .72);
+      backdrop-filter: blur(20px) saturate(1.15);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      position: relative;
+      padding: clamp(30px, 5vw, 62px);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      right: -54px;
+      top: -46px;
+      background: radial-gradient(circle at 36% 38%, white 0 10%, transparent 11%), linear-gradient(135deg, rgba(255,111,183,.42), rgba(255,212,93,.35));
+      animation: smallFloat 7s infinite alternate var(--ease);
+      z-index: -1;
+    }
+    @keyframes smallFloat {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(18px) rotate(14deg); }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.68);
+      border: 1px solid var(--border);
+      color: #6d345d;
+      font-weight: 950;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 15px 0 0 var(--sun), 30px 0 0 var(--mint);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 12ch;
+      margin-bottom: 18px;
+      font-size: clamp(3.5rem, 10vw, 8.8rem);
+      line-height: .78;
+      letter-spacing: -.11em;
+      text-wrap: balance;
+    }
+    .hero-word {
+      display: inline-block;
+      transform-origin: bottom left;
+      animation: wordPop .8s var(--ease) both;
+      animation-delay: calc(var(--i) * 90ms);
+    }
+    .hero-word:nth-child(2n) { color: #f85fae; }
+    .hero-word:nth-child(3n) { color: #2b222f; }
+    @keyframes wordPop {
+      0% { opacity: 0; transform: translateY(26px) rotate(-4deg) scale(.92); }
+      70% { opacity: 1; transform: translateY(-6px) rotate(1deg) scale(1.025); }
+      100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    .lead {
+      max-width: 730px;
+      color: rgba(25, 21, 29, .76);
+      font-size: clamp(1.05rem, 2vw, 1.32rem);
+      line-height: 1.55;
+      letter-spacing: -.025em;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+
+    .hero-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px;
+    }
+    .tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .62);
+      border: 1px solid var(--border);
+      color: rgba(25,21,29,.74);
+      font-weight: 850;
+      font-size: .82rem;
+    }
+
+    .hero-card {
+      position: relative;
+      align-self: stretch;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border: 2px dashed rgba(25,21,29,.12);
+      border-radius: 28px;
+      z-index: -1;
+    }
+    .room-illustration {
+      position: relative;
+      min-height: 330px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.18)),
+        radial-gradient(circle at 70% 20%, rgba(255, 111, 183, .28), transparent 28%),
+        linear-gradient(135deg, rgba(255,212,93,.32), rgba(136,234,213,.20));
+      overflow: hidden;
+      border: 1px solid rgba(25,21,29,.08);
+    }
+    .floor-line {
+      position: absolute;
+      left: 7%; right: 7%; bottom: 70px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(25,21,29,.12);
+    }
+    .amp, .speaker, .crate, .mic, .cable, .record, .sparkle {
+      position: absolute;
+      animation: propFloat 5.5s var(--delay, 0s) infinite alternate var(--ease);
+    }
+    @keyframes propFloat {
+      from { transform: translateY(0) rotate(var(--r, 0deg)); }
+      to { transform: translateY(var(--fy, -9px)) rotate(calc(var(--r, 0deg) + var(--rr, 3deg))); }
+    }
+    .amp {
+      width: 120px; height: 86px; left: 42px; bottom: 72px;
+      border-radius: 18px;
+      background: #2a232d;
+      border: 8px solid #413849;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.10), 0 18px 28px rgba(25,21,29,.18);
+      --r: -3deg; --delay: -.4s;
+    }
+    .amp::before { content: ""; position: absolute; inset: 18px; border-radius: 10px; background: repeating-linear-gradient(90deg, #75687a 0 3px, #2a232d 3px 7px); opacity: .75; }
+    .amp::after { content: "MJS"; position: absolute; top: 8px; right: 11px; color: var(--sun); font-size: 12px; font-weight: 950; }
+    .speaker {
+      width: 95px; height: 132px; right: 48px; bottom: 68px;
+      border-radius: 22px;
+      background: #302738;
+      box-shadow: 0 18px 28px rgba(25,21,29,.18);
+      --r: 4deg; --delay: -1.2s; --fy: -13px;
+    }
+    .speaker::before, .speaker::after {
+      content: ""; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%;
+      background: radial-gradient(circle, var(--pink) 0 19%, #151019 20% 35%, #75687a 36% 43%, #201925 44%);
+    }
+    .speaker::before { top: 19px; width: 48px; height: 48px; }
+    .speaker::after { bottom: 18px; width: 62px; height: 62px; }
+    .crate {
+      width: 128px; height: 72px; left: 125px; bottom: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sun), #ffb65d);
+      border: 2px solid rgba(25,21,29,.12);
+      box-shadow: 0 16px 24px rgba(25,21,29,.11);
+      --r: 3deg; --delay: -2.8s; --rr: -4deg;
+    }
+    .crate::before { content: "mostly storage"; position: absolute; left: 13px; top: 18px; font-size: 13px; font-weight: 950; color: rgba(25,21,29,.68); }
+    .mic {
+      width: 18px; height: 112px; left: 50%; bottom: 76px; border-radius: 999px; background: #29222f; --r: -2deg; --delay: -1.8s; }
+    .mic::before { content:""; position:absolute; left:-12px; top:-36px; width: 42px; height: 54px; border-radius: 999px; background: linear-gradient(180deg, #53485a, #241d2a); box-shadow: inset 0 -14px 0 rgba(255,255,255,.08); }
+    .mic::after { content:""; position:absolute; left:-42px; bottom:-14px; width: 102px; height: 12px; border-radius:999px; background:#29222f; }
+    .cable { width: 160px; height: 44px; left: 79px; bottom: 37px; border-bottom: 5px solid rgba(25,21,29,.30); border-radius: 0 0 50% 50%; --delay: -3s; --fy: -3px; }
+    .record { width: 64px; height: 64px; right: 122px; top: 54px; border-radius: 50%; background: radial-gradient(circle, var(--sun) 0 12%, #201925 13% 30%, #44394c 31% 36%, #201925 37% 100%); animation: spin 10s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .sparkle { width: 15px; height: 15px; background: var(--pink); transform: rotate(45deg); border-radius: 4px; opacity: .7; }
+    .sparkle.a { top: 42px; left: 50px; --delay: -2s; }
+    .sparkle.b { top: 150px; right: 35px; background: var(--mint); --delay: -4s; }
+    .sparkle.c { top: 92px; left: 210px; background: var(--sun); --delay: -1s; }
+
+    .status-card {
+      margin-top: 16px;
+      padding: 20px;
+      border-radius: 26px;
+      background: rgba(255,255,255,.66);
+      border: 1px solid var(--border);
+    }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .status-row span { color: var(--muted); font-weight: 850; }
+    .status-row strong { font-size: 1.7rem; letter-spacing: -.08em; }
+    .status-card h2 { font-size: clamp(2rem, 4vw, 3.1rem); line-height: .92; letter-spacing: -.08em; margin-bottom: 11px; }
+    .status-card h2 span { color: #e64396; white-space: nowrap; }
+    .status-card p { color: rgba(25,21,29,.72); line-height: 1.5; margin-bottom: 0; }
+
+    .ticker-wrap {
+      margin: 12px 0 56px;
+      overflow: hidden;
+      border-block: 1px solid rgba(25,21,29,.08);
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(16px);
+    }
+    .ticker {
+      display: flex;
+      width: max-content;
+      gap: 12px;
+      padding: 13px 0;
+      animation: ticker 24s linear infinite;
+    }
+    .ticker span {
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 8px 20px rgba(25,21,29,.06);
+      font-weight: 950;
+      color: rgba(25,21,29,.76);
+    }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+
+    section { scroll-margin-top: 110px; }
+    .section-pad { padding: 46px 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, .72fr) minmax(260px, .28fr);
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+    .section-head h2 {
+      font-size: clamp(2.5rem, 6vw, 5.4rem);
+      line-height: .84;
+      letter-spacing: -.095em;
+      margin-bottom: 0;
+      text-wrap: balance;
+    }
+    .section-head p { color: rgba(25,21,29,.70); line-height: 1.55; margin-bottom: 0; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .section-card,
+    .rate-card,
+    .echo-card,
+    .form-card,
+    .admin-card,
+    .mini-note {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-card::after,
+    .rate-card::after,
+    .echo-card::after {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      right: -34px;
+      top: -34px;
+      border-radius: 36% 64% 45% 55% / 48% 44% 56% 52%;
+      background: var(--accent, rgba(255,111,183,.22));
+      transition: transform .35s var(--ease);
+      z-index: -1;
+    }
+    .section-card:hover::after,
+    .rate-card:hover::after,
+    .echo-card:hover::after { transform: scale(1.45) rotate(18deg); }
+    .section-card:hover,
+    .rate-card:hover,
+    .echo-card:hover { transform: translateY(-5px); }
+    .section-card,
+    .rate-card,
+    .echo-card { transition: transform .35s var(--ease); }
+
+    .card-icon {
+      width: 52px; height: 52px;
+      display: grid; place-items: center;
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--border);
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 24px rgba(25,21,29,.07);
+    }
+    .section-card h3,
+    .rate-card h3,
+    .echo-card h3,
+    .event-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.28rem;
+      letter-spacing: -.04em;
+    }
+    .section-card p,
+    .rate-card p,
+    .echo-card p,
+    .event-card p { color: rgba(25,21,29,.70); line-height: 1.5; margin-bottom: 0; }
+
+    .rate-card.featured {
+      background: linear-gradient(135deg, rgba(255,111,183,.22), rgba(255,255,255,.74) 46%, rgba(255,212,93,.24));
+      border-color: rgba(255, 111, 183, .32);
+    }
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      margin: 6px 0 13px;
+    }
+    .price strong { font-size: 3.5rem; letter-spacing: -.10em; line-height: .9; }
+    .price span { color: var(--muted); font-weight: 900; }
+    .feature-list { display: grid; gap: 9px; padding: 0; margin: 18px 0 0; list-style: none; }
+    .feature-list li { display: flex; gap: 9px; color: rgba(25,21,29,.74); font-weight: 750; }
+    .feature-list li::before { content: "✦"; color: #e64396; }
+
+    .split-feature {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(300px, .7fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .brand-board {
+      min-height: 420px;
+      border-radius: var(--radius-xl);
+      padding: clamp(22px, 4vw, 42px);
+      background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,.85) 0 14%, transparent 15%),
+        radial-gradient(circle at 82% 26%, rgba(255, 212, 93, .46), transparent 20rem),
+        linear-gradient(135deg, rgba(255,111,183,.28), rgba(136,234,213,.26));
+      border: 1px solid rgba(255,255,255,.72);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-board h2 { font-size: clamp(3rem, 7vw, 6.4rem); line-height: .82; letter-spacing: -.105em; margin-bottom: 18px; }
+    .brand-board p { max-width: 620px; color: rgba(25,21,29,.72); font-size: 1.1rem; line-height: 1.55; }
+    .floating-label {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(25,21,29,.08);
+      box-shadow: var(--shadow-soft);
+      font-weight: 950;
+      animation: propFloat 5s infinite alternate var(--ease);
+    }
+    .floating-label.one { right: 8%; top: 18%; --r: 6deg; --delay: -.5s; }
+    .floating-label.two { left: 8%; bottom: 14%; --r: -5deg; --delay: -2s; }
+    .floating-label.three { right: 14%; bottom: 20%; --r: 3deg; --delay: -3.2s; }
+
+    .event-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-chip {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.68);
+      border-radius: 999px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 900;
+      color: rgba(25,21,29,.70);
+      transition: transform .2s var(--ease), background .2s var(--ease);
+    }
+    .filter-chip.active,
+    .filter-chip:hover { background: var(--ink); color: white; transform: translateY(-2px); }
+
+    .events-list {
+      display: grid;
+      gap: 14px;
+    }
+    .event-card {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 26px;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: opacity .28s var(--ease), transform .28s var(--ease), max-height .28s var(--ease), padding .28s var(--ease), margin .28s var(--ease);
+      overflow: hidden;
+    }
+    .event-card.disappearing {
+      opacity: 0;
+      transform: translateY(14px) scale(.96);
+      max-height: 0;
+      padding-block: 0;
+      margin: 0;
+    }
+    .event-date {
+      display: grid;
+      gap: 3px;
+      padding: 15px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.68);
+      border: 1px solid var(--border);
+    }
+    .event-date strong { font-size: 1.1rem; letter-spacing: -.04em; }
+    .event-date span { color: var(--muted); font-weight: 850; }
+    .event-type { margin-bottom: 6px !important; color: #bd327e !important; font-weight: 950; text-transform: uppercase; font-size: .76rem; letter-spacing: .08em; }
+    .event-actions { display: flex; flex-direction: column; gap: 8px; align-items: end; }
+    .text-link { color: #a82471; font-weight: 950; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .text-link:hover { text-decoration: underline; }
+
+    .booking-area {
+      display: grid;
+      grid-template-columns: minmax(0, .84fr) minmax(320px, .58fr);
+      gap: 16px;
+      align-items: start;
+    }
+    form { display: grid; gap: 13px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    label { display: grid; gap: 7px; color: rgba(25,21,29,.75); font-weight: 900; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(25,21,29,.10);
+      background: rgba(255,255,255,.75);
+      color: var(--ink);
+      border-radius: 18px;
+      padding: 14px 15px;
+      outline: none;
+      transition: border .2s var(--ease), box-shadow .2s var(--ease), transform .2s var(--ease), background .2s var(--ease);
+    }
+    textarea { resize: vertical; min-height: 136px; }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(255, 111, 183, .65);
+      box-shadow: 0 0 0 5px rgba(255,111,183,.15);
+      background: white;
+    }
+    .form-status {
+      display: none;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(136, 234, 213, .25);
+      color: #15564c;
+      font-weight: 850;
+      border: 1px solid rgba(21, 86, 76, .12);
+    }
+    .form-status.show { display: block; animation: popIn .35s var(--ease) both; }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(10px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .mini-note {
+      display: grid;
+      gap: 13px;
+    }
+    .mini-note h3 { font-size: 2rem; line-height: .95; letter-spacing: -.07em; margin-bottom: 4px; }
+    .contact-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .contact-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.64);
+      border: 1px solid var(--border);
+    }
+    .contact-line span { color: var(--muted); font-weight: 850; }
+    .contact-line strong { text-align: right; }
+
+    .admin-section {
+      display: none;
+      padding-bottom: 80px;
+    }
+    .admin-section.open { display: block; animation: popIn .4s var(--ease) both; }
+    .admin-grid { display: grid; grid-template-columns: minmax(0, .72fr) minmax(300px, .52fr); gap: 16px; align-items: start; }
+    .admin-card.locked { max-width: 560px; margin: 0 auto; }
+    .admin-title { display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 14px; }
+    .hidden { display: none !important; }
+    .admin-list { display: grid; gap: 10px; }
+    .admin-item {
+      padding: 13px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.64);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 7px;
+    }
+    .admin-item-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .admin-item button { border: 0; border-radius: 999px; background: rgba(255,111,183,.16); color: #8d145b; font-weight: 950; padding: 8px 10px; cursor: pointer; }
+    .export-box {
+      width: 100%;
+      min-height: 190px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .8rem;
+    }
+
+    .site-footer {
+      padding: 36px 0 90px;
+      color: rgba(25,21,29,.68);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      border-top: 1px solid rgba(25,21,29,.08);
+      padding-top: 22px;
+    }
+    .footer-links { display: flex; gap: 12px; flex-wrap: wrap; font-weight: 900; }
+
+    .sticky-book {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      z-index: 60;
+      transform: translateX(-50%) translateY(90px);
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px 9px 15px;
+      border-radius: 999px;
+      background: rgba(25,21,29,.88);
+      color: white;
+      box-shadow: 0 20px 55px rgba(25,21,29,.22);
+      backdrop-filter: blur(18px);
+      transition: transform .35s var(--ease), opacity .35s var(--ease);
+    }
+    .sticky-book.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .sticky-book span { font-weight: 900; white-space: nowrap; }
+    .sticky-book a { background: white; color: var(--ink); padding: 11px 14px; border-radius: 999px; font-weight: 950; }
+
+    .bubble-pop {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 25%, white 0 16%, var(--pink) 17% 100%);
+      pointer-events: none;
+      z-index: 200;
+      animation: bubbleTap .7s var(--ease) forwards;
+      opacity: .9;
+    }
+    @keyframes bubbleTap {
+      to { transform: translateY(-28px) scale(2.8); opacity: 0; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px) scale(.985);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.in-view { opacity: 1; transform: translateY(0) scale(1); }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 20px;
+      z-index: 120;
+      max-width: min(420px, calc(100% - 36px));
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: rgba(25,21,29,.90);
+      color: white;
+      box-shadow: 0 22px 55px rgba(25,21,29,.25);
+      transform: translateY(30px) scale(.98);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .3s var(--ease), opacity .3s var(--ease);
+      font-weight: 850;
+    }
+    .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
+    @media (max-width: 980px) {
+      .site-header { grid-template-columns: 1fr auto; border-radius: 28px; }
+      .desktop-nav { display: none; }
+      .header-actions { grid-column: 2; }
+      .hero, .split-feature, .booking-area, .admin-grid { grid-template-columns: 1fr; }
+      .hero-card { min-height: auto; }
+      .section-head { grid-template-columns: 1fr; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .event-card { grid-template-columns: 1fr; }
+      .event-actions { flex-direction: row; align-items: center; justify-content: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .site-shell { width: min(100% - 22px, var(--max)); }
+      .site-header { width: calc(100% - 16px); top: 8px; margin-top: 8px; padding: 8px; }
+      .brand-copy small { display: none; }
+      .pill-button.secondary { display: none; }
+      .pill-button { padding: 11px 12px; }
+      .hero { padding-top: 52px; }
+      .hero-copy, .hero-card, .brand-board, .form-card, .admin-card, .mini-note { border-radius: 26px; }
+      h1 { font-size: clamp(3.4rem, 18vw, 5.8rem); }
+      .form-grid { grid-template-columns: 1fr; }
+      .status-row { align-items: start; flex-direction: column; }
+      .room-illustration { min-height: 280px; }
+      .amp { left: 20px; transform: scale(.85); }
+      .speaker { right: 24px; transform: scale(.86); }
+      .crate { left: 95px; transform: scale(.88); }
+      .mic { left: 48%; }
+      .sticky-book { width: calc(100% - 24px); justify-content: space-between; }
+      .sticky-book span { font-size: .9rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+      .ticker { animation: none; }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="bg-orbit" aria-hidden="true">
+    <span class="blob one"></span>
+    <span class="blob two"></span>
+    <span class="blob three"></span>
+    <span class="blob four"></span>
+    <span class="blob five"></span>
+  </div>
+  <div class="noise" aria-hidden="true"></div>
+
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Mostly Just Storage home">
-      <span class="brand-mark">MJS</span>
-      <span class="brand-copy"><strong>Mostly Just Storage</strong><small>Studio + Venue</small></span>
+      <span class="brand-mark">mjs</span>
+      <span class="brand-copy">
+        <strong>Mostly Just Storage</strong>
+        <small>studio · tiny venue · Echo House</small>
+      </span>
     </a>
+
     <nav class="desktop-nav" aria-label="Primary navigation">
-      <a href="#book">Book Studio</a>
+      <a href="#studio">Studio</a>
+      <a href="#rates">Rates</a>
       <a href="#events">Events</a>
       <a href="#echo-house">Echo House</a>
-      <a href="#contact">Contact</a>
+      <a href="#book">Book</a>
     </nav>
-    <a class="nav-cta" href="#book">Book Now</a>
+
+    <div class="header-actions">
+      <button class="pill-button secondary" type="button" data-admin-open>Admin</button>
+      <a class="pill-button" href="#book">Book Now</a>
+    </div>
   </header>
 
-  <main id="top">
-    <section class="hero grid-shell">
-      <div class="hero-copy">
-        <p class="eyebrow">Recording room · small shows · strange little nights</p>
-        <h1>A working studio that is, technically, mostly just storage.</h1>
-        <p class="lead">There are instruments in the corner, speakers against the wall, cables in the bins, and people coming through to make something real. Book a session, pull up to a show, or let Echo House build the night.</p>
+  <main id="main">
+    <section id="top" class="hero site-shell">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Havre de Grace / Harford County-ish creative room</p>
+        <h1 aria-label="Mostly just storage, sometimes magic">
+          <span class="hero-word" style="--i:0">Mostly</span>
+          <span class="hero-word" style="--i:1">Just</span>
+          <span class="hero-word" style="--i:2">Storage.</span>
+          <span class="hero-word" style="--i:3">Sometimes</span>
+          <span class="hero-word" style="--i:4">Magic.</span>
+        </h1>
+        <p class="lead">
+          A working studio, tiny venue, and creative room where the gear is stacked in the corner until somebody books a session, throws a movie night, records a hook, or turns the storage room into a real memory.
+        </p>
         <div class="hero-actions">
           <a class="button primary" href="#book">Book studio time</a>
-          <a class="button ghost" href="#events">See what’s coming up</a>
+          <a class="button ghost" href="#events">See upcoming events</a>
+          <button class="button sunny" type="button" data-confetti>Make it pop</button>
+        </div>
+        <div class="hero-tag-row" aria-label="Services">
+          <span class="tag">recording</span>
+          <span class="tag">rehearsal</span>
+          <span class="tag">movie nights</span>
+          <span class="tag">small shows</span>
+          <span class="tag">content capture</span>
         </div>
       </div>
-      <aside class="hero-card" aria-label="Current studio offer">
-        <div class="hero-card-top">
-          <span>Now booking</span>
-          <strong>2026</strong>
+
+      <aside class="hero-card reveal" aria-label="Studio status">
+        <div class="room-illustration" aria-hidden="true">
+          <span class="floor-line"></span>
+          <span class="record"></span>
+          <span class="amp"></span>
+          <span class="speaker"></span>
+          <span class="crate"></span>
+          <span class="mic"></span>
+          <span class="cable"></span>
+          <span class="sparkle a"></span>
+          <span class="sparkle b"></span>
+          <span class="sparkle c"></span>
         </div>
-        <h2>Studio time from <span>$35/hr</span></h2>
-        <p>Recording, writing, editing, rehearsal, content capture, and small room use. Engineer-assisted sessions and packages available.</p>
-        <a href="#book" class="text-link">Start a booking request →</a>
+        <div class="status-card">
+          <div class="status-row">
+            <span>Now booking</span>
+            <strong>2026</strong>
+          </div>
+          <h2>Studio time from <span>$35/hr</span></h2>
+          <p>Recording, writing, editing, rehearsal, content capture, and small room use. Engineer-assisted sessions and packages available.</p>
+        </div>
       </aside>
     </section>
 
-    <section class="marquee" aria-label="Brand note">
-      <span>Mostly Just Storage Studio</span>
-      <span>Echo House Events</span>
-      <span>Glasswall Records</span>
-      <span>Studio · Venue · Room for ideas</span>
+    <div class="ticker-wrap" aria-label="Scrolling studio services">
+      <div class="ticker">
+        <span>record here</span><span>throw a small show</span><span>Echo House presents</span><span>bring the camcorder</span><span>movie night</span><span>tiny venue energy</span><span>mostly just storage</span><span>studio sessions</span>
+        <span>record here</span><span>throw a small show</span><span>Echo House presents</span><span>bring the camcorder</span><span>movie night</span><span>tiny venue energy</span><span>mostly just storage</span><span>studio sessions</span>
+      </div>
+    </div>
+
+    <section id="studio" class="section-pad site-shell">
+      <div class="section-head reveal">
+        <h2>The room has range.</h2>
+        <p>Keep it simple: the building is Mostly Just Storage. The programming, events, and “we put this night together” energy can live under Echo House.</p>
+      </div>
+      <div class="grid-3">
+        <article class="section-card reveal" style="--accent: rgba(255,111,183,.22)">
+          <div class="card-icon">🎙️</div>
+          <h3>Studio sessions</h3>
+          <p>Vocals, demos, writing nights, quick edits, listening passes, and small creative sessions without making the process feel corporate.</p>
+        </article>
+        <article class="section-card reveal" style="--accent: rgba(136,234,213,.30)">
+          <div class="card-icon">🧃</div>
+          <h3>Tiny events</h3>
+          <p>Movie nights, listening rooms, release hangs, mini showcases, private parties, and low-pressure nights that can still feel special.</p>
+        </article>
+        <article class="section-card reveal" style="--accent: rgba(255,212,93,.30)">
+          <div class="card-icon">📦</div>
+          <h3>Storage-room charm</h3>
+          <p>The joke is part of the brand: it is mostly storage until the lights come on and the right people are in the room.</p>
+        </article>
+      </div>
     </section>
 
-    <section class="section grid-shell two-col" id="about">
-      <div>
-        <p class="eyebrow">The room</p>
-        <h2>Not a fake-perfect studio. A room where people actually finish things.</h2>
+    <section id="rates" class="section-pad site-shell">
+      <div class="section-head reveal">
+        <h2>Rates that can start making money now.</h2>
+        <p>These can change later. For launch, the site needs clear starting points so people know they can afford to ask.</p>
       </div>
-      <div class="prose">
-        <p>Mostly Just Storage is the physical place: the room, the gear, the chairs, the cables, the show setup, the late nights, and the photos people take when something finally works.</p>
-        <p>Echo House is the event and production name: movie nights, listening rooms, house shows, pop-up concerts, artist nights, and custom show builds.</p>
+      <div class="grid-3">
+        <article class="rate-card featured reveal" style="--accent: rgba(255,111,183,.24)">
+          <div class="card-icon">⏱️</div>
+          <h3>Room / studio time</h3>
+          <div class="price"><strong>$35</strong><span>/ hour</span></div>
+          <p>For artists who need the space, writing time, rehearsal, or a simple recording setup.</p>
+          <ul class="feature-list">
+            <li>Good for quick sessions</li>
+            <li>Low-pressure creative room</li>
+            <li>Book by request</li>
+          </ul>
+        </article>
+        <article class="rate-card reveal" style="--accent: rgba(136,234,213,.30)">
+          <div class="card-icon">🎚️</div>
+          <h3>Assisted session</h3>
+          <div class="price"><strong>$75+</strong><span>/ session</span></div>
+          <p>For people who want help setting up, recording, organizing takes, or leaving with something usable.</p>
+          <ul class="feature-list">
+            <li>Basic engineering help</li>
+            <li>Great for demos</li>
+            <li>Custom quote if longer</li>
+          </ul>
+        </article>
+        <article class="rate-card reveal" style="--accent: rgba(216,195,255,.34)">
+          <div class="card-icon">🎟️</div>
+          <h3>Events / Echo House</h3>
+          <div class="price"><strong>Ask</strong><span>for quote</span></div>
+          <p>Small shows, movie nights, release hangs, private events, and Echo House-branded programming.</p>
+          <ul class="feature-list">
+            <li>Small-room event planning</li>
+            <li>Show production available</li>
+            <li>Flexible by idea</li>
+          </ul>
+        </article>
       </div>
     </section>
 
-    <section class="section grid-shell" id="book">
-      <div class="section-heading">
-        <p class="eyebrow">Book studio time</p>
-        <h2>Simple rates to get people back in the room.</h2>
-        <p>Start with a request. We’ll confirm the time, the type of session, and what you need before you pull up.</p>
-      </div>
-
-      <div class="rate-grid">
-        <article class="rate-card featured">
-          <span class="rate-label">Quick hour</span>
-          <h3>$35/hr</h3>
-          <p>Room time for writing, recording prep, vocal takes, rehearsal, editing, or content capture.</p>
-        </article>
-        <article class="rate-card">
-          <span class="rate-label">Standard session</span>
-          <h3>$75+</h3>
-          <p>Best for people who need help running the session, setting up, getting takes, and leaving with a cleaner result.</p>
-        </article>
-        <article class="rate-card">
-          <span class="rate-label">Packages</span>
-          <h3>Ask</h3>
-          <p>Multi-hour blocks, recurring studio days, artist bundles, small show filming, and event/studio combos.</p>
-        </article>
-      </div>
-
-      <form class="booking-form" name="studio-booking" method="POST" data-netlify="true" action="/thanks.html">
-        <input type="hidden" name="form-name" value="studio-booking" />
-        <div class="form-intro">
-          <h3>Request a session</h3>
-          <p>This form is built to collect leads immediately when hosted on Netlify. Replace the email/contact details with yours before launch.</p>
+    <section id="echo-house" class="section-pad site-shell">
+      <div class="split-feature">
+        <div class="brand-board reveal">
+          <p class="eyebrow">Brand architecture</p>
+          <h2>Echo House can still live here.</h2>
+          <p>
+            Echo House does not have to disappear because the old domain lapsed. Use Echo House as the event/show brand: “Echo House at Mostly Just Storage,” “Echo House presents,” “Echo House movie night,” or “Echo House builds your show.”
+          </p>
+          <span class="floating-label one">Echo House Presents</span>
+          <span class="floating-label two">recorded at MJS</span>
+          <span class="floating-label three">tiny venue, big night</span>
         </div>
-        <label>Name<input required name="name" placeholder="Your name" /></label>
-        <label>Email or phone<input required name="contact" placeholder="Email or phone number" /></label>
-        <label>What do you need?
-          <select name="session_type">
-            <option>Studio time — $35/hr</option>
-            <option>Engineer-assisted session — $75+</option>
-            <option>Event / show / movie night</option>
-            <option>Echo House show production</option>
-            <option>Something else</option>
-          </select>
+        <div class="grid-2">
+          <article class="echo-card reveal" style="--accent: rgba(255,212,93,.30)">
+            <div class="card-icon">🏠</div>
+            <h3>Echo House events</h3>
+            <p>For the recurring nights, lineups, movie nights, and scenes you want people to remember by name.</p>
+          </article>
+          <article class="echo-card reveal" style="--accent: rgba(255,111,183,.20)">
+            <div class="card-icon">🛠️</div>
+            <h3>Echo House builds</h3>
+            <p>For people who want you to help put a show together instead of only renting the room.</p>
+          </article>
+          <article class="echo-card reveal" style="--accent: rgba(136,234,213,.30)">
+            <div class="card-icon">📍</div>
+            <h3>Mostly Just Storage</h3>
+            <p>For the actual place: studio, venue, creative room, equipment, photos, bookings, and client proof.</p>
+          </article>
+          <article class="echo-card reveal" style="--accent: rgba(216,195,255,.34)">
+            <div class="card-icon">💿</div>
+            <h3>Glasswall can evolve</h3>
+            <p>It does not have to stay dark and greedy. This version is warmer, weirder, cleaner, and more usable.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="section-pad site-shell">
+      <div class="section-head reveal">
+        <h2>What’s coming up?</h2>
+        <p>Events can be filtered, added from the admin panel, and exported as JSON when you are ready for a real backend.</p>
+      </div>
+      <div class="event-tools reveal">
+        <div class="filter-row" aria-label="Event filters">
+          <button class="filter-chip active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="Studio">Studio</button>
+          <button class="filter-chip" type="button" data-filter="Echo House">Echo House</button>
+          <button class="filter-chip" type="button" data-filter="Show">Shows</button>
+        </div>
+        <button class="pill-button secondary" type="button" data-admin-open>Add event</button>
+      </div>
+      <div class="events-list" id="events-list" aria-live="polite"></div>
+    </section>
+
+    <section id="book" class="section-pad site-shell">
+      <div class="section-head reveal">
+        <h2>Book the room.</h2>
+        <p>For now, this creates a clean booking request, saves a local copy in the admin panel, and opens an email draft. Replace the contact email before launch.</p>
+      </div>
+      <div class="booking-area">
+        <article class="form-card reveal">
+          <form id="booking-form" name="studio-booking" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="studio-booking" />
+            <div class="form-grid">
+              <label>Name
+                <input required name="name" autocomplete="name" placeholder="Your name" />
+              </label>
+              <label>Email or phone
+                <input required name="contact" autocomplete="email" placeholder="Email or phone" />
+              </label>
+            </div>
+            <div class="form-grid">
+              <label>What do you need?
+                <select name="session_type">
+                  <option>Studio time — $35/hr</option>
+                  <option>Engineer-assisted session — $75+</option>
+                  <option>Event / show / movie night</option>
+                  <option>Echo House show production</option>
+                  <option>Something else</option>
+                </select>
+              </label>
+              <label>Preferred date/time
+                <input name="preferred_time" placeholder="Example: Friday after 6 PM" />
+              </label>
+            </div>
+            <label>Tell us the plan
+              <textarea name="message" rows="5" placeholder="Song, show, rehearsal, movie night, photoshoot, recording session, etc."></textarea>
+            </label>
+            <button class="button primary" type="submit">Send booking request</button>
+            <p id="booking-status" class="form-status" role="status"></p>
+          </form>
+        </article>
+        <aside class="mini-note reveal">
+          <h3>Launch copy</h3>
+          <p>Mostly Just Storage is the place. Echo House is what happens inside it.</p>
+          <div class="contact-card">
+            <div class="contact-line"><span>Email</span><strong id="contact-email-label">booking@mostlyjuststorage.studio</strong></div>
+            <div class="contact-line"><span>Instagram</span><strong>@mostlyjuststorage</strong></div>
+            <div class="contact-line"><span>Location</span><strong>Harford County / Havre de Grace area</strong></div>
+          </div>
+          <button class="button ghost" type="button" data-copy-copy>Copy homepage blurb</button>
+        </aside>
+      </div>
+    </section>
+
+    <section id="admin" class="admin-section site-shell" aria-label="Admin panel">
+      <div id="admin-locked" class="admin-card locked reveal">
+        <div class="admin-title">
+          <div>
+            <p class="eyebrow">Private-ish launch panel</p>
+            <h2 style="margin:0;font-size:clamp(2.2rem,5vw,4rem);line-height:.88;letter-spacing:-.08em;">Admin</h2>
+          </div>
+          <button class="pill-button secondary" type="button" data-admin-close>Close</button>
+        </div>
+        <p style="color:rgba(25,21,29,.70);line-height:1.5;">
+          This is good for drafting and testing. It is not true security because this is one static HTML file. For a real public backend, connect Supabase, Firebase, Sanity, or a server route.
+        </p>
+        <label>Password
+          <input id="admin-password" type="password" placeholder="Enter password" autocomplete="off" />
         </label>
-        <label>Preferred date/time<input name="preferred_time" placeholder="Example: Friday after 6 PM" /></label>
-        <label>Tell us the plan<textarea name="message" rows="5" placeholder="Song, show, rehearsal, movie night, photoshoot, recording session, etc."></textarea></label>
-        <button class="button primary" type="submit">Send request</button>
-      </form>
-    </section>
-
-    <section class="section grid-shell" id="events">
-      <div class="section-heading split">
-        <div>
-          <p class="eyebrow">Events</p>
-          <h2>Coming up at the room.</h2>
-        </div>
-        <a class="button ghost" href="#contact">Ask about an event</a>
+        <button id="admin-login" class="button primary" type="button">Unlock events</button>
+        <p style="color:var(--muted);font-weight:800;margin:10px 0 0;">Temporary password: <code>storage</code></p>
       </div>
-      <div id="events-list" class="event-list" aria-live="polite"></div>
-    </section>
 
-    <section class="section grid-shell two-col echo-panel" id="echo-house">
-      <div>
-        <p class="eyebrow">Echo House</p>
-        <h2>The brand for nights we throw, build, and make feel bigger than the room.</h2>
-      </div>
-      <div class="prose">
-        <p>Echo House doesn’t need to disappear because the domain lapsed. It becomes the programming name: <strong>Echo House at Mostly Just Storage</strong>.</p>
-        <p>Use it when the event needs a stamp: concerts, movie nights, listening sessions, small festivals, artist showcases, release parties, and custom shows for other people.</p>
-        <a class="button primary" href="#contact">Have Echo House build your event</a>
-      </div>
-    </section>
+      <div id="admin-unlocked" class="admin-grid hidden">
+        <article class="admin-card reveal">
+          <div class="admin-title">
+            <div>
+              <p class="eyebrow">Event editor</p>
+              <h2 style="margin:0;font-size:clamp(2.1rem,5vw,3.8rem);line-height:.88;letter-spacing:-.08em;">Add a night</h2>
+            </div>
+            <button class="pill-button secondary" type="button" data-admin-close>Close</button>
+          </div>
+          <form id="event-form">
+            <div class="form-grid">
+              <label>Title
+                <input required name="title" placeholder="Echo House Movie Night" />
+              </label>
+              <label>Type
+                <select name="type">
+                  <option>Echo House</option>
+                  <option>Studio</option>
+                  <option>Show</option>
+                  <option>Movie Night</option>
+                  <option>Private Event</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-grid">
+              <label>Date
+                <input required name="date" type="date" />
+              </label>
+              <label>Time
+                <input name="time" placeholder="7:00 PM / TBA" />
+              </label>
+            </div>
+            <label>Details
+              <textarea required name="description" placeholder="Short description for the public event card."></textarea>
+            </label>
+            <label>Link
+              <input name="link" placeholder="#book or a ticket/RSVP link" />
+            </label>
+            <button class="button primary" type="submit">Add event</button>
+          </form>
+        </article>
 
-    <section class="section grid-shell proof-grid" aria-label="What you can do here">
-      <article>
-        <span>01</span>
-        <h3>Record</h3>
-        <p>Vocals, demos, writing sessions, rough mixes, references, and content around the session.</p>
-      </article>
-      <article>
-        <span>02</span>
-        <h3>Host</h3>
-        <p>Small concerts, movie nights, listening rooms, private creative nights, and local artist showcases.</p>
-      </article>
-      <article>
-        <span>03</span>
-        <h3>Build</h3>
-        <p>Echo House can help shape the lineup, room feel, flyer language, and run-of-show.</p>
-      </article>
-    </section>
-
-    <section class="section grid-shell contact-section" id="contact">
-      <div>
-        <p class="eyebrow">Contact</p>
-        <h2>Book the room. Build the night. Use what’s already here.</h2>
-        <p class="lead small">Replace these placeholders with your real phone, email, Instagram, and address/area before publishing.</p>
-      </div>
-      <div class="contact-card">
-        <a href="mailto:booking@mostlyjuststorage.studio">booking@mostlyjuststorage.studio</a>
-        <a href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
-        <p>Havre de Grace / Harford County, Maryland area</p>
-        <p class="fine-print">Exact address can be sent after booking confirmation.</p>
+        <aside class="admin-card reveal">
+          <div class="admin-title">
+            <div>
+              <p class="eyebrow">Saved locally</p>
+              <h3 style="margin:0;font-size:1.6rem;letter-spacing:-.05em;">Events + leads</h3>
+            </div>
+            <button id="reset-demo" class="pill-button secondary" type="button">Reset</button>
+          </div>
+          <div id="admin-list" class="admin-list"></div>
+          <label style="margin-top:14px;">Export JSON
+            <textarea id="export-box" class="export-box" readonly></textarea>
+          </label>
+          <button id="copy-json" class="button ghost" type="button">Copy JSON</button>
+        </aside>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p>© <span id="year"></span> Mostly Just Storage Studio</p>
-    <p>Echo House events · Glasswall Records adjacent</p>
-    <a href="admin.html">Admin</a>
+  <footer class="site-footer site-shell">
+    <div class="footer-inner">
+      <div>
+        <strong>Mostly Just Storage</strong><br />
+        <span>Studio · tiny venue · Echo House home base</span>
+      </div>
+      <div class="footer-links">
+        <a href="#studio">Studio</a>
+        <a href="#events">Events</a>
+        <a href="#book">Book</a>
+        <button class="filter-chip" type="button" data-admin-open>Admin</button>
+      </div>
+    </div>
   </footer>
 
-  <script src="app.js"></script>
+  <div id="sticky-book" class="sticky-book" aria-hidden="true">
+    <span>Studio time starts at $35/hr</span>
+    <a href="#book">Book</a>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const CONFIG = {
+      adminPassword: 'storage',
+      bookingEmail: 'booking@mostlyjuststorage.studio',
+      storageKeys: {
+        events: 'mjs_events_v2',
+        leads: 'mjs_booking_leads_v2'
+      }
+    };
+
+    const DEFAULT_EVENTS = [
+      {
+        title: 'Echo House at Mostly Just Storage',
+        date: '2026-07-01',
+        time: 'TBA',
+        type: 'Echo House',
+        description: 'A first-room event to introduce the studio, the venue idea, and what Echo House is becoming.',
+        link: '#book'
+      },
+      {
+        title: 'Studio time now booking',
+        date: '2026-06-15',
+        time: 'By request',
+        type: 'Studio',
+        description: 'Recording, writing, rehearsal, and content capture sessions from $35/hr.',
+        link: '#book'
+      },
+      {
+        title: 'Storage Room Listening Night',
+        date: '2026-07-12',
+        time: '7:00 PM',
+        type: 'Show',
+        description: 'A small listening-room style night for unreleased music, demos, friends, and weird little room energy.',
+        link: '#book'
+      }
+    ];
+
+    const $ = (selector, scope = document) => scope.querySelector(selector);
+    const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+
+    function readJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (error) {
+        console.warn('Could not read storage', error);
+        return fallback;
+      }
+    }
+
+    function writeJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value, null, 2));
+    }
+
+    function getEvents() {
+      return readJSON(CONFIG.storageKeys.events, DEFAULT_EVENTS);
+    }
+
+    function setEvents(events) {
+      writeJSON(CONFIG.storageKeys.events, events);
+      renderEvents(currentFilter);
+      renderAdminList();
+      updateExportBox();
+    }
+
+    function getLeads() {
+      return readJSON(CONFIG.storageKeys.leads, []);
+    }
+
+    function setLeads(leads) {
+      writeJSON(CONFIG.storageKeys.leads, leads);
+      renderAdminList();
+      updateExportBox();
+    }
+
+    function formatEventDate(dateString) {
+      const date = new Date(`${dateString}T12:00:00`);
+      if (Number.isNaN(date.getTime())) return dateString;
+      return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    let currentFilter = 'all';
+
+    function renderEvents(filter = 'all') {
+      const target = $('#events-list');
+      if (!target) return;
+      currentFilter = filter;
+      const events = getEvents()
+        .filter(event => filter === 'all' || event.type === filter || (filter === 'Show' && ['Show', 'Movie Night', 'Private Event'].includes(event.type)))
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      target.innerHTML = '';
+
+      if (!events.length) {
+        target.innerHTML = `<article class="event-card"><div class="event-copy"><h3>No ${filter === 'all' ? '' : filter} events listed yet.</h3><p>Add one from the admin panel or send a booking request.</p></div></article>`;
+        return;
+      }
+
+      for (const event of events) {
+        const article = document.createElement('article');
+        article.className = 'event-card reveal in-view';
+        const link = event.link ? `<a class="button ghost" href="${escapeHTML(event.link)}">Details</a>` : `<a class="button ghost" href="#book">Ask</a>`;
+        article.innerHTML = `
+          <div class="event-date"><strong>${formatEventDate(event.date)}</strong><span>${escapeHTML(event.time || 'TBA')}</span></div>
+          <div class="event-copy">
+            <p class="event-type">${escapeHTML(event.type || 'Event')}</p>
+            <h3>${escapeHTML(event.title)}</h3>
+            <p>${escapeHTML(event.description)}</p>
+          </div>
+          <div class="event-actions">${link}</div>
+        `;
+        target.appendChild(article);
+      }
+    }
+
+    function escapeHTML(value = '') {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function openAdmin() {
+      $('#admin').classList.add('open');
+      location.hash = 'admin';
+      $('#admin-password')?.focus();
+    }
+
+    function closeAdmin() {
+      $('#admin').classList.remove('open');
+      if (location.hash === '#admin') history.pushState('', document.title, location.pathname + location.search);
+    }
+
+    function unlockAdmin() {
+      const input = $('#admin-password');
+      if (!input) return;
+      if (input.value === CONFIG.adminPassword) {
+        $('#admin-locked').classList.add('hidden');
+        $('#admin-unlocked').classList.remove('hidden');
+        renderAdminList();
+        updateExportBox();
+        toast('Admin unlocked. Add events, test leads, and export JSON.');
+      } else {
+        input.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-8px)' },
+          { transform: 'translateX(8px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 220, easing: 'ease-out' });
+        toast('Wrong password. Temporary password is “storage”.');
+      }
+    }
+
+    function renderAdminList() {
+      const box = $('#admin-list');
+      if (!box) return;
+      const events = getEvents();
+      const leads = getLeads();
+      box.innerHTML = '';
+
+      const eventHeader = document.createElement('div');
+      eventHeader.innerHTML = `<strong>Events (${events.length})</strong>`;
+      box.appendChild(eventHeader);
+
+      events.forEach((event, index) => {
+        const item = document.createElement('div');
+        item.className = 'admin-item';
+        item.innerHTML = `
+          <div class="admin-item-top">
+            <div><strong>${escapeHTML(event.title)}</strong><br><span>${formatEventDate(event.date)} · ${escapeHTML(event.time || 'TBA')} · ${escapeHTML(event.type)}</span></div>
+            <button type="button" data-delete-event="${index}">Delete</button>
+          </div>
+          <small>${escapeHTML(event.description)}</small>
+        `;
+        box.appendChild(item);
+      });
+
+      const leadHeader = document.createElement('div');
+      leadHeader.style.marginTop = '12px';
+      leadHeader.innerHTML = `<strong>Booking leads (${leads.length})</strong>`;
+      box.appendChild(leadHeader);
+
+      if (!leads.length) {
+        const empty = document.createElement('div');
+        empty.className = 'admin-item';
+        empty.textContent = 'No local booking leads yet.';
+        box.appendChild(empty);
+      }
+
+      leads.forEach((lead, index) => {
+        const item = document.createElement('div');
+        item.className = 'admin-item';
+        item.innerHTML = `
+          <div class="admin-item-top">
+            <div><strong>${escapeHTML(lead.name)}</strong><br><span>${escapeHTML(lead.contact)} · ${escapeHTML(lead.session_type)}</span></div>
+            <button type="button" data-delete-lead="${index}">Delete</button>
+          </div>
+          <small>${escapeHTML(lead.preferred_time || 'No preferred time')} — ${escapeHTML(lead.message || 'No message')}</small>
+        `;
+        box.appendChild(item);
+      });
+    }
+
+    function updateExportBox() {
+      const exportBox = $('#export-box');
+      if (!exportBox) return;
+      exportBox.value = JSON.stringify({ events: getEvents(), leads: getLeads() }, null, 2);
+    }
+
+    function makeMailto(lead) {
+      const subject = encodeURIComponent(`Booking request: ${lead.session_type}`);
+      const body = encodeURIComponent([
+        `Name: ${lead.name}`,
+        `Contact: ${lead.contact}`,
+        `Request: ${lead.session_type}`,
+        `Preferred time: ${lead.preferred_time || 'Not specified'}`,
+        '',
+        lead.message || 'No extra message.'
+      ].join('\n'));
+      return `mailto:${CONFIG.bookingEmail}?subject=${subject}&body=${body}`;
+    }
+
+    function toast(message) {
+      const el = $('#toast');
+      if (!el) return;
+      el.textContent = message;
+      el.classList.add('show');
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => el.classList.remove('show'), 3100);
+    }
+
+    function copyText(text, successMessage = 'Copied.') {
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(() => toast(successMessage)).catch(() => fallbackCopy(text, successMessage));
+      } else {
+        fallbackCopy(text, successMessage);
+      }
+    }
+
+    function fallbackCopy(text, successMessage) {
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      temp.setAttribute('readonly', '');
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      temp.remove();
+      toast(successMessage);
+    }
+
+    function spawnBubble(x, y, color) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const bubble = document.createElement('span');
+      bubble.className = 'bubble-pop';
+      bubble.style.left = `${x - 9}px`;
+      bubble.style.top = `${y - 9}px`;
+      if (color) bubble.style.background = color;
+      document.body.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 800);
+    }
+
+    function burstConfetti() {
+      const colors = ['#ff6fb7', '#ffd45d', '#88ead5', '#96c7ff', '#d8c3ff', '#d7ff72'];
+      const centerX = innerWidth / 2;
+      const centerY = innerHeight * .38;
+      for (let i = 0; i < 38; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'bubble-pop';
+        const angle = (Math.PI * 2 * i) / 38;
+        const distance = 60 + Math.random() * 180;
+        piece.style.left = `${centerX}px`;
+        piece.style.top = `${centerY}px`;
+        piece.style.background = colors[i % colors.length];
+        piece.style.borderRadius = i % 3 === 0 ? '6px' : '999px';
+        piece.animate([
+          { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+          { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance + 50}px) rotate(${Math.random() * 220}deg) scale(.4)`, opacity: 0 }
+        ], { duration: 900 + Math.random() * 600, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1600);
+      }
+      toast('The room is now officially less boring.');
+    }
+
+    function initReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        }
+      }, { threshold: .12, rootMargin: '0px 0px -70px 0px' });
+      $$('.reveal').forEach(el => observer.observe(el));
+    }
+
+    function initStickyBook() {
+      const sticky = $('#sticky-book');
+      if (!sticky) return;
+      window.addEventListener('scroll', () => {
+        const show = window.scrollY > 720 && !location.hash.includes('book');
+        sticky.classList.toggle('visible', show);
+        sticky.setAttribute('aria-hidden', show ? 'false' : 'true');
+      }, { passive: true });
+    }
+
+    function initEvents() {
+      renderEvents();
+
+      $$('.filter-chip[data-filter]').forEach(button => {
+        button.addEventListener('click', () => {
+          $$('.filter-chip[data-filter]').forEach(b => b.classList.remove('active'));
+          button.classList.add('active');
+          $$('#events-list .event-card').forEach(card => card.classList.add('disappearing'));
+          setTimeout(() => renderEvents(button.dataset.filter), 180);
+        });
+      });
+    }
+
+    function initAdmin() {
+      $$('[data-admin-open]').forEach(button => button.addEventListener('click', openAdmin));
+      $$('[data-admin-close]').forEach(button => button.addEventListener('click', closeAdmin));
+      $('#admin-login')?.addEventListener('click', unlockAdmin);
+      $('#admin-password')?.addEventListener('keydown', event => {
+        if (event.key === 'Enter') unlockAdmin();
+      });
+
+      $('#event-form')?.addEventListener('submit', event => {
+        event.preventDefault();
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const events = getEvents();
+        events.push(data);
+        setEvents(events);
+        event.currentTarget.reset();
+        toast('Event added. It is live in this browser.');
+        burstConfetti();
+      });
+
+      $('#admin-list')?.addEventListener('click', event => {
+        const deleteEvent = event.target.closest('[data-delete-event]');
+        const deleteLead = event.target.closest('[data-delete-lead]');
+        if (deleteEvent) {
+          const index = Number(deleteEvent.dataset.deleteEvent);
+          const events = getEvents();
+          events.splice(index, 1);
+          setEvents(events);
+          toast('Event deleted.');
+        }
+        if (deleteLead) {
+          const index = Number(deleteLead.dataset.deleteLead);
+          const leads = getLeads();
+          leads.splice(index, 1);
+          setLeads(leads);
+          toast('Lead deleted.');
+        }
+      });
+
+      $('#reset-demo')?.addEventListener('click', () => {
+        setEvents(DEFAULT_EVENTS);
+        setLeads([]);
+        toast('Demo events restored and local leads cleared.');
+      });
+
+      $('#copy-json')?.addEventListener('click', () => copyText($('#export-box')?.value || '', 'JSON copied.'));
+
+      if (location.hash === '#admin') openAdmin();
+    }
+
+    function initBooking() {
+      $('#contact-email-label').textContent = CONFIG.bookingEmail;
+      $('#booking-form')?.addEventListener('submit', event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const lead = Object.fromEntries(new FormData(form).entries());
+        lead.created_at = new Date().toISOString();
+        setLeads([lead, ...getLeads()]);
+        const status = $('#booking-status');
+        status.textContent = 'Request saved locally and an email draft is opening. Send the email to finish the booking request.';
+        status.classList.add('show');
+        toast('Booking request captured. Email draft opening now.');
+        window.location.href = makeMailto(lead);
+        setTimeout(() => form.reset(), 400);
+      });
+
+      $('[data-copy-copy]')?.addEventListener('click', () => {
+        copyText('Mostly Just Storage is the place: a working studio, tiny venue, and creative room. Echo House is what happens inside it: movie nights, listening rooms, small concerts, artist showcases, release parties, and weird little nights that feel bigger than the room.', 'Homepage blurb copied.');
+      });
+    }
+
+    function initBubbles() {
+      document.addEventListener('pointerdown', event => {
+        const interactive = event.target.closest('button, a, input, select, textarea, label');
+        if (!interactive) return;
+        spawnBubble(event.clientX, event.clientY);
+      });
+      $('[data-confetti]')?.addEventListener('click', burstConfetti);
+    }
+
+    initReveal();
+    initStickyBook();
+    initEvents();
+    initAdmin();
+    initBooking();
+    initBubbles();
+    updateExportBox();
+  </script>
 </body>
 </html>
