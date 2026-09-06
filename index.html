@@ -188,7 +188,13 @@
           </div>
         </div>
 
-        <form class="booking-form" id="booking-form" novalidate>
+        <form
+          class="booking-form"
+          id="booking-form"
+          method="post"
+          action="https://room.saintjules.org/api/mjs/bookings"
+          novalidate
+        >
           <div class="form-row">
             <label>
               <span>Your name <strong aria-hidden="true">*</strong></span>

@@ -21,6 +21,7 @@ test("booking fields are typed, separated, and honestly described", async () => 
   }
   assert.match(html, /type="email"/);
   assert.match(html, /type="date"/);
+  assert.match(html, /method="post"/);
   assert.match(html, /This is a request, not an automatic reservation/);
 });
 
