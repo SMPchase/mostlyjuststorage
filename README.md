@@ -1,28 +1,36 @@
-# Mostly Just Storage Studio — launch site
+# Mostly Just Storage
 
-This is a simple static website for mostlyjuststorage.studio.
+Public website for [mostlyjuststorage.studio](https://mostlyjuststorage.studio/), deployed from `main` with GitHub Pages.
 
-## What is included
-- `index.html` — public website
-- `styles.css` — visual design
-- `app.js` — public event rendering
-- `events.js` — default event data
-- `admin.html` — draft admin/event editor
-- `admin.js` — temporary local admin logic
-- `thanks.html` — booking form success page
+## How it works
 
-## Important
-The admin page is only a draft/local editor. It is not a secure production backend because static websites expose their JavaScript. Use it for drafting events, then connect a real backend later.
+- The public site is plain HTML, CSS, and JavaScript in this repository.
+- Published events, rates, location copy, and booking availability load from the Saint Jules API.
+- Booking requests are validated and stored in the private Saint Jules database. No contact details are stored in the visitor's browser.
+- Studio management lives at [studio.saintjules.org](https://studio.saintjules.org/) behind Cloudflare Access. Open **Mostly Just Storage** there to manage events, inquiries, and public settings.
 
-Temporary admin password: `storage`
-Change it in `admin.js`.
+The public API is hosted at `https://room.saintjules.org/api/mjs`. Owner-only routes stay on the Access-protected Studio host.
 
-## Quick launch options
-1. Upload the folder to Netlify, Vercel, GitHub Pages, or your web host.
-2. Point `mostlyjuststorage.studio` to the host.
-3. Replace placeholder email, Instagram, phone, and address details.
-4. Replace the default events in `events.js`.
-5. Replace the pricing if needed.
+## Local preview
 
-## Form note
-The booking form uses Netlify form attributes. It will collect submissions automatically only when hosted on Netlify with forms enabled. On other hosts, connect the form to your own endpoint or replace it with a mailto/booking link.
+Any static server works. For example:
+
+```sh
+python3 -m http.server 4173
+```
+
+Then open `http://localhost:4173`. The production API only permits the production website origins, so the local preview intentionally shows its calendar fallback and cannot submit real bookings.
+
+## Verification
+
+```sh
+node --test tests/*.test.mjs
+```
+
+The checks guard the public/private boundary, form wiring, required metadata, and removal of the old browser-only admin system.
+
+## Publishing
+
+Push an approved change to `main`. GitHub Pages serves the repository root using the domain in `CNAME`.
+
+Do not add admin passwords, API secrets, or booking data to this repository. The public site needs no secret keys.

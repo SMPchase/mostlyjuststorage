@@ -1,0 +1,8 @@
+{
+  "name": "mostly-just-storage-site",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  }
+}
